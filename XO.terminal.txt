@@ -1,0 +1,56 @@
+print("***", " Игра Крестики-нолики ", "***")
+
+game = list(range(1, 10))
+
+def pole_game(game):
+   print("-------------")
+   for i in range(3):
+      print("|", game[0+i*3], "|", game[1+i*3], "|", game[2+i*3], "|")
+      print("-------------")
+
+def prover_input(player):
+   valid = False
+   while not valid:
+      player_in = input("Куда поставим " + player+"? ")
+      try:
+         player_in = int(player_in)
+      except:
+         print("Некорректный ввод. Введите число от 1 до 9.")
+         continue
+      if player_in >= 1 and player_in <= 9:
+         if(str(game[player_in-1]) not in "XO"):
+            game[player_in-1] = player
+            valid = True
+         else:
+            print("Клетка уже занята!")
+      else:
+        print("Введите число от 1 до 9.")
+
+def prover_win(game):
+   win_comb = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+   for a in win_comb:
+       if game[a[0]] == game[a[1]] == game[a[2]]:
+          return game[a[0]]
+   return False
+
+def main(game):
+    count = 0
+    win = False
+    while not win:
+        pole_game(game)
+        if count % 2 == 0:
+           prover_input("X")
+        else:
+           prover_input("O")
+        count += 1
+        if count > 4:
+           xo = prover_win(game)
+           if xo:
+              print(xo, "Выиграл!")
+              win = True
+              break
+        if count == 9:
+            print("Ничья!")
+            break
+    pole_game(game)
+main(game)
